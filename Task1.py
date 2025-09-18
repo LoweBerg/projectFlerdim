@@ -17,7 +17,6 @@ fig = plt.figure()
 ax = plt.axes(projection='3d')
 
 ax.plot_surface(X, Y, Z)
-ax.plot(1, 1, 1)
 
 plt.grid()
 plt.show()
