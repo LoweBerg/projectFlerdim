@@ -18,6 +18,10 @@ def f4(x, y):
     return 8*x*y-4*x**2*y-2*x*y**2+x**2*y**2
 
 
+def f5(x, y):
+    return (x**2+3*y**2)*np.e**(-x**2-y**2)
+
+
 def gen_z(f, x, y, width, res):
     X_, Y_ = np.meshgrid(np.linspace(x - width, x + width, res), np.linspace(y - width, y + width, res))
 
@@ -27,7 +31,7 @@ def gen_z(f, x, y, width, res):
 
 
 # setup
-fix, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
+fig, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
 axs[0].set_xlabel("X")
 axs[0].set_ylabel("Y")
 axs[0].set_zlabel("Z")
@@ -41,9 +45,12 @@ X2, Y2, Z2 = gen_z(f2, 0, 0, 1, resolution)
 X3, Y3, Z3 = gen_z(f3, 0, -1, 1, resolution)
 
 X4, Y4, Z4 = gen_z(f4, 1, 2, 5, resolution)
-Z4[Z4 > 10] = np.nan
+Z4[Z4 > 10] = np.nan  # matplotlib limits are shit
 Z4[Z4 < 0] = np.nan
 
-axs[0].plot_surface(X4, Y4, Z4)
-axs[1].contourf(X4, Y4, Z4)
+X5, Y5, Z5 = gen_z(f5, 0, 0, 5, resolution)
+
+axs[0].plot_surface(X5, Y5, Z5)
+pcm = axs[1].contourf(X5, Y5, Z5, levels=20, cmap='rainbow')
+fig.colorbar(pcm, ax=axs[1])
 plt.show()
