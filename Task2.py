@@ -10,8 +10,18 @@ def ddy(f, x, y, h):
     return (f(x, y+h)-f(x, y))/h
 
 
-def grad(f, x, y, h):
+def grad(f, x, y, h):  # returns the gradient of a function f at a point x, y by comparing with x+h, y+h
     return np.array([ddx(f, x, y, h), ddy(f, x, y, h)])
+
+
+def hessian(f, x, y, h):
+    dfxx = (grad(f, x+h, y, h)[0] - grad(f, x, y, h)[0])/h
+    dfxy = (grad(f, x, y+h, h)[0] - grad(f, x, y, h)[0])/h
+    # not necessary but can be nice to have anyway
+    # dfyx = (grad(f, x+h, y, h)[1] - grad(f, x, y, h)[1])/h
+    dfyy = (grad(f, x, y+h, h)[1] - grad(f, x, y, h)[1])/h
+
+    return np.array([[dfxx, dfxy], [dfxy, dfyy]])
 
 
 def func(x, y):
@@ -42,7 +52,7 @@ np.vectorize(ddy)
 
 X, Y = np.meshgrid(np.linspace(-10, 10, 100), np.linspace(-10, 10, 100))
 
-Z1 = grad(func, X, Y,  10**-5)
+Z1 = grad(func, X, Y,  10**-6)
 
 Z2 = np.array(analytic_sine(X, Y))
 
@@ -54,4 +64,11 @@ print("yay")
 Err = np.squeeze(Err, axis=0)
 
 ax.plot_surface(X, Y, Err)
+
+X = np.logspace(-8, -4)
+
+Y = np.array([np.linalg.norm(grad(func, np.pi/4, np.pi/4, h) - analytic_sine(np.pi/4, np.pi/4)) for h in X])
+
+plt.figure()
+plt.plot(X, Y)
 plt.show()
