@@ -54,15 +54,12 @@ def gen_err(y1_, y2_):
 def f5(x, y):  # (0, +-1.25)
     return (x**2+3*y**2)*np.e**(-x**2-y**2)
 
+# switches
+plot1 = 0
+plot2 = 0
+plot3 = 1
 
 # setup
-fig = plt.figure()
-plt.title("Absolute error between numerical and analytic gradient")
-ax = fig.add_subplot(projection='3d')
-ax.set_xlabel("X")
-ax.set_ylabel("Y")
-ax.set_zlabel("Error")
-ax.set_zlim(-10**-5, 10**-5)
 np.vectorize(grad)
 np.vectorize(ddx)
 np.vectorize(ddy)
@@ -81,28 +78,38 @@ Err = gen_err(Z1, Z2)
 print("yay")
 Err = np.squeeze(Err, axis=0)
 
-ax.plot_surface(X1, Y1, Err)
+if plot1:
+    fig = plt.figure()
+    plt.title("Absolute error between numerical and analytic gradient")
+    ax = fig.add_subplot(projection='3d')
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+    ax.set_zlabel("Error")
+    ax.set_zlim(-10**-5, 10**-5)
+    ax.plot_surface(X1, Y1, Err)
 
-X2 = np.logspace(-8, -4)
+X2 = np.linspace(-9, -4)
 
-Y2 = np.array([np.linalg.norm(grad(func, np.pi/4, np.pi/4, h) - analytic_grad(np.pi / 4, np.pi / 4)) for h in X2])
+Y2 = np.array([np.linalg.norm(grad(func, np.pi/4, np.pi/4, 10**h) - analytic_grad(np.pi / 4, np.pi / 4)) for h in X2])
 
-fig = plt.figure()
-ax = fig.add_subplot()
-plt.title(r"Absolute error at point ($\frac{\pi}{4}$, $\frac{\pi}{4}$) depending on h")
-ax.set_xlabel("h")
-ax.set_ylabel("Absolute error")
-plt.grid()
-plt.plot(X2, Y2)
+if plot2:
+    fig = plt.figure()
+    ax = fig.add_subplot()
+    plt.title(r"Absolute error at point ($\frac{\pi}{4}$, $\frac{\pi}{4}$) depending on h")
+    ax.set_xlabel("exponent of h")
+    ax.set_ylabel("Absolute error")
+    plt.grid()
+    plt.plot(X2, Y2)
 
 X3, Y3 = np.meshgrid(np.linspace(-100, 100, 500), np.linspace(-100, 100, 500))
-Z1 = hessian(func, X3, Y3, 10**-6)[0, 0]
+Z1 = hessian(func, X3, Y3, 10**-3)[0, 0]
 Z2 = analytic_hess(X3, Y3)[0, 0]
 
-fig = plt.figure()
-plt.title("Error in first value of hessian matrix")
-ax = fig.add_subplot(projection='3d')
-ax.plot_surface(X3, Y3, Z2-Z1)
+if plot3:
+    fig = plt.figure()
+    plt.title("Error in first value of hessian matrix")
+    ax = fig.add_subplot(projection='3d')
+    ax.plot_surface(X3, Y3, Z2-Z1)
 
 
 print(grad(f5, 0, 1.25, 10**-6))
