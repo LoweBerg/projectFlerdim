@@ -15,11 +15,11 @@ def grad(f, x, y, h):  # returns the gradient of a function f at a point x, y by
 
 
 def hessian(f, x, y, h):
-    dfxx = (grad(f, x+h, y, h)[0] - grad(f, x, y, h)[0])/h
-    dfxy = (grad(f, x, y+h, h)[0] - grad(f, x, y, h)[0])/h
+    dfxx = (ddx(f, x+h, y, h) - ddx(f, x, y, h))/h
+    dfxy = (ddx(f, x, y+h, h) - ddx(f, x, y, h))/h
     # not necessary but can be nice to have anyway
-    # dfyx = (grad(f, x+h, y, h)[1] - grad(f, x, y, h)[1])/h
-    dfyy = (grad(f, x, y+h, h)[1] - grad(f, x, y, h)[1])/h
+    # dfyx = (ddy(f, x+h, y, h) - ddy(f, x, y, h))/h
+    dfyy = (ddy(f, x, y+h, h) - ddy(f, x, y, h))/h
 
     return np.array([[dfxx, dfxy], [dfxy, dfyy]])
 
@@ -28,8 +28,12 @@ def func(x, y):
     return np.sin(x+y)
 
 
-def analytic_sine(x, y):
-    return np.cos(x+y), np.cos(x+y)
+def analytic_grad(x, y):
+    return np.array([np.cos(x+y), np.cos(x+y)])
+
+
+def analytic_hess(x, y):
+    return np.array([[-np.sin(x+y), -np.sin(x+y)], [-np.sin(x+y), -np.sin(x+y)]])
 
 
 def gen_z(f, x, y, width, res):
@@ -40,8 +44,21 @@ def gen_z(f, x, y, width, res):
     return X_, Y_, Z_
 
 
+def gen_err(y1_, y2_):
+    diff = np.array([y2_[0] - y1_[0], y2_[1] - y1_[1]])
+    err = np.array([np.sqrt(diff[0]**2+diff[1]**2)])
+
+    return err
+
+
+def f5(x, y):  # (0, +-1.25)
+    return (x**2+3*y**2)*np.e**(-x**2-y**2)
+
+
 # setup
-ax = plt.figure().add_subplot(projection='3d')
+fig = plt.figure()
+fig.set_label("Absolute error between numerical and analytic gradient")
+ax = fig.add_subplot(projection='3d')
 ax.set_xlabel("X")
 ax.set_ylabel("Y")
 ax.set_zlabel("Error")
@@ -50,25 +67,42 @@ np.vectorize(grad)
 np.vectorize(ddx)
 np.vectorize(ddy)
 
-X, Y = np.meshgrid(np.linspace(-10, 10, 100), np.linspace(-10, 10, 100))
+print(hessian(func, 1, 1, 10**-6))
+print(analytic_hess(1, 1))
 
-Z1 = grad(func, X, Y,  10**-6)
+X1, Y1 = np.meshgrid(np.linspace(-10, 10, 100), np.linspace(-10, 10, 100))
 
-Z2 = np.array(analytic_sine(X, Y))
+Z1 = grad(func, X1, Y1, 10**-6)
 
-Z3 = np.array([Z2[0] - Z1[0], Z2[1] - Z2[1]])
+Z2 = analytic_grad(X1, Y1)
 
-Err = np.array([np.sqrt(Z3[0]**2+Z3[1]**2)])
+Err = gen_err(Z1, Z2)
 
 print("yay")
 Err = np.squeeze(Err, axis=0)
 
-ax.plot_surface(X, Y, Err)
+ax.plot_surface(X1, Y1, Err)
 
-X = np.logspace(-8, -4)
+X2 = np.logspace(-8, -4)
 
-Y = np.array([np.linalg.norm(grad(func, np.pi/4, np.pi/4, h) - analytic_sine(np.pi/4, np.pi/4)) for h in X])
+Y2 = np.array([np.linalg.norm(grad(func, np.pi/4, np.pi/4, h) - analytic_grad(np.pi / 4, np.pi / 4)) for h in X2])
 
 plt.figure()
-plt.plot(X, Y)
+plt.title(r"Absolute error at point ($\frac{\pi}{4}$, $\frac{\pi}{4}$) depending on h")
+plt.xlabel("h")
+plt.ylabel("Absolute error")
+plt.grid()
+plt.plot(X2, Y2)
+
+X3, Y3 = np.meshgrid(np.linspace(-100, 100, 500), np.linspace(-100, 100, 500))
+Z1 = hessian(func, X3, Y3, 10**-6)[0, 0]
+Z2 = analytic_hess(X3, Y3)[0, 0]
+
+ax = plt.figure().add_subplot(projection='3d')
+ax.plot_surface(X3, Y3, Z2-Z1)
+
+
+print(grad(f5, 0, 1.25, 10**-6))
+print(hessian(f5, 0, 1.25, 10**-6))
+
 plt.show()

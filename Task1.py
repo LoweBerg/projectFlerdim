@@ -18,7 +18,7 @@ def f4(x, y):
     return 8*x*y-4*x**2*y-2*x*y**2+x**2*y**2
 
 
-def f5(x, y):
+def f5(x, y):  # (0, +-1.25)
     return (x**2+3*y**2)*np.e**(-x**2-y**2)
 
 
