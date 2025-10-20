@@ -1,0 +1,63 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def ddx(x, y, func):                      # taken from task 2
+    h = 10**(-8)
+    x_derivative = (func(x+h, y) - func(x, y))/h
+    return x_derivative
+
+def ddy(x, y, func):                     
+    h = 10**(-8)
+    y_derivative = (func(x, y+h) - func(x, y))/h
+    return y_derivative
+
+def gradient(x, y, func):
+    return np.array([[ddx(x, y, func), ddy(x, y, func)]])
+
+# also grab hessian from prev task
+
+def himmelblau(x, y):
+    return (x**2 + y - 11)**2+ (x + y**2 - 7)**2
+
+def optimization(x_init, y_init, func, alpha, k):
+    global iterates
+    point = np.array([[x_init, y_init]]) 
+    iterates = []
+    for i in range(0, k):
+        newpoint = point - alpha*gradient(x_init, y_init, func)
+        point = newpoint
+        iterates.append(point)
+    print(iterates)
+    return point, iterates    # = point**(k+1)
+
+optimization(0, 0, himmelblau, 0.01, 20)                # algorithm run 1
+X1 = np.outer([item[0][0] for item in iterates], np.ones(20))
+Y1 = np.outer([item[0][1] for item in iterates], np.ones(20)).T
+Z1 = himmelblau(X1, Y1)
+
+optimization(1/5, -4, himmelblau, 0.01, 20)             # algorithm run 2
+X2 = np.outer([item[0][0] for item in iterates], np.ones(20))
+Y2 = np.outer([item[0][1] for item in iterates], np.ones(20)).T
+Z2 = himmelblau(X2, Y2)
+
+ax1 = plt.subplot(1,2,1, projection = '3d')
+ax2 = plt.subplot(1,2,2, projection = '3d')
+ax1.plot_surface(X1, Y1, Z1)
+ax2.plot_surface(X2, Y2, Z2)
+ax1.set_title('point (0,0)')
+ax2.set_title('point (1/5, -4)')
+
+plt.suptitle("himmelblau's fcn")
+plt.xlabel('x')
+plt.ylabel('y')
+plt.show()
+
+print(gradient(iterates[19][0], iterates[19][1], himmelblau))
+
+"""
+print(gradient(x20))
+print(hessian(x20))         # grab x20 from the algorithm in some way - last element in point list??
+
+gradient should be zero, hessian should be positive definite
+
+"""
