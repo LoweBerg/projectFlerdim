@@ -57,7 +57,7 @@ def f5(x, y):  # (0, +-1.25)
 
 # setup
 fig = plt.figure()
-fig.set_label("Absolute error between numerical and analytic gradient")
+plt.title("Absolute error between numerical and analytic gradient")
 ax = fig.add_subplot(projection='3d')
 ax.set_xlabel("X")
 ax.set_ylabel("Y")
@@ -87,10 +87,11 @@ X2 = np.logspace(-8, -4)
 
 Y2 = np.array([np.linalg.norm(grad(func, np.pi/4, np.pi/4, h) - analytic_grad(np.pi / 4, np.pi / 4)) for h in X2])
 
-plt.figure()
+fig = plt.figure()
+ax = fig.add_subplot()
 plt.title(r"Absolute error at point ($\frac{\pi}{4}$, $\frac{\pi}{4}$) depending on h")
-plt.xlabel("h")
-plt.ylabel("Absolute error")
+ax.set_xlabel("h")
+ax.set_ylabel("Absolute error")
 plt.grid()
 plt.plot(X2, Y2)
 
@@ -98,7 +99,9 @@ X3, Y3 = np.meshgrid(np.linspace(-100, 100, 500), np.linspace(-100, 100, 500))
 Z1 = hessian(func, X3, Y3, 10**-6)[0, 0]
 Z2 = analytic_hess(X3, Y3)[0, 0]
 
-ax = plt.figure().add_subplot(projection='3d')
+fig = plt.figure()
+plt.title("Error in first value of hessian matrix")
+ax = fig.add_subplot(projection='3d')
 ax.plot_surface(X3, Y3, Z2-Z1)
 
 
