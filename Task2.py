@@ -81,9 +81,6 @@ np.vectorize(grad)
 np.vectorize(ddx)
 np.vectorize(ddy)
 
-print(hessian(func, 1, 1, 10**-6))
-print(analytic_hess(1, 1))
-
 X1, Y1 = np.meshgrid(np.linspace(-10, 10, 100), np.linspace(-10, 10, 100))
 
 Z1 = grad(func, X1, Y1, 10**-6)
@@ -92,8 +89,9 @@ Z2 = analytic_grad(X1, Y1)
 
 Err = gen_err(Z1, Z2)
 
-print("yay")
 Err = np.squeeze(Err, axis=0)
+
+print("yay") # Very neccessary. Program needs some validation
 
 if plot1:
     fig = plt.figure()
@@ -130,9 +128,5 @@ if plot3:
     ax.set_ylabel("y")
     ax.set_zlabel("error")
     ax.plot_surface(X3, Y3, Z2-Z1)
-
-
-print(grad(f5, 0, 1.25, 10**-6))
-print(hessian(f5, 0, 1.25, 10**-6))
 
 plt.show()
