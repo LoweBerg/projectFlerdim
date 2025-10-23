@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Sep 30 22:50:55 2025
-
-@author: Freja
-"""
-
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -95,5 +88,6 @@ if plot5:   # two local maxima at x=0 y=1,-1 and one minimum at the origin
     pcm = axs[1].contourf(X5, Y5, Z5, levels=20, cmap='rainbow')
     fig.colorbar(pcm, ax=axs[1])
     
+
 
 plt.show()
