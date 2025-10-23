@@ -27,11 +27,12 @@ def optimization(x_init, y_init, func, alpha, k):
     point = np.array([[x_init, y_init]])    # make the initial point into an array
     iterates = []   # a list of every point we get throughout the algorithm, index 1-20
     for i in range(0, k):
-        newpoint = point - alpha*gradient(x_init, y_init, func, 10**(-3))
+        newpoint = point - alpha*gradient(x_init, y_init, func, 10**(-6))
         point = newpoint
         iterates.append(point)
     print(iterates)
-    return point, iterates    # = point**(k+1)
+    print('\n\n point ', point)
+    return point    # = point**(k+1)
 
 # plotting himmelblau on given interval using same methoud as prev tasks
 X = np.outer(np.linspace(-5, 5, 50), np.ones(50))
@@ -48,11 +49,12 @@ plt.suptitle('function 1')
 plt.xlabel('x')
 plt.ylabel('y')
 plt.show()     
-
+# can see that we have 4 minimas (& one maxima?) locally
 
 # using our algorithm to find minimas around the two points
 optimization(0, 0, himmelblau, 0.01, 20)                # algorithm run 1
 X1 = np.outer([item[0][0] for item in iterates], np.ones(20))
+print(X1)
 Y1 = np.outer([item[0][1] for item in iterates], np.ones(20)).T
 Z1 = himmelblau(X1, Y1)
 
@@ -80,8 +82,8 @@ print(x20)
 y20 = Y1[19][19]
 print(y20)
 
-print('\n Gradient (0,0)', gradient(x20, y20, himmelblau, 10**(-3)))
-print('\n Hessian (0,0)', hessian(himmelblau, x20, y20, 10**(-3)))
+print('\n Gradient (0,0)', gradient(x20, y20, himmelblau, 10**(-6)))
+print('\n Hessian (0,0)', hessian(himmelblau, x20, y20, 10**(-6)))
 
 # around (1/5, -4)
 x20 = X2[19][0]
@@ -89,10 +91,11 @@ print(x20)
 y20 = Y2[19][19]
 print(y20)
 
-print('\n Gradient (1/5, -4)', gradient(x20, y20, himmelblau, 10**(-3)))
-print('\n Hessian (1/5, -4)', hessian(himmelblau, x20, y20, 10**(-3)))
+print('\n Gradient (1/5, -4)', gradient(x20, y20, himmelblau, 10**(-6)))
+print('\n Hessian (1/5, -4)', hessian(himmelblau, x20, y20, 10**(-6)))
 
 """
-gradient should be zero, hessian should be positive definite
+gradient should be zero, hessian should be positive definite :(
 
 """
+
