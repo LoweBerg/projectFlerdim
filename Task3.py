@@ -37,11 +37,10 @@ for i in range(np.size(X)):
 X_, Y_ = np.meshgrid(np.linspace(-10**(-5), 10**(-5), 51), np.linspace(-10**(-5), 10**(-5), 51))
 Z_ = roots
 
-ax = plt.figure().add_subplot(projection='3d', xlabel = 'x', ylabel = 'y', zlabel = 'z')
-ax.plot_surface(X_, Y_, P_2(X_, Y_), color = 'purple', lw = 0.4, alpha = 0.7, edgecolors = 'purple')            # plotting taylor
-ax.plot_surface(X_, Y_, Z_, color= 'blue', lw = 0.4, alpha = 0.7, edgecolors = 'b')                    # plotting Z
+ax = plt.figure().add_subplot(projection='3d', xlabel='x', ylabel='y', zlabel='z')
+ax.plot_surface(X_, Y_, P_2(X_, Y_), color='purple', lw=0.4, alpha=0.7, edgecolors='purple')            # plotting taylor
+ax.plot_surface(X_, Y_, Z_, color='blue', lw=0.4, alpha=0.7, edgecolors='b')                    # plotting Z
 plt.title('Taylor fcn (purple) & Z fcn (blue)')
-plt.show()
 
 # calculating & plotting absolute error
 err = abs(Z_ - PVZ_2)
