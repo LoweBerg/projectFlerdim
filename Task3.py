@@ -59,5 +59,3 @@ plt.contourf(X_, Y_, err, levels = 150, cmap = 'inferno')
 plt.title('Absolute error')
 plt.colorbar()
 plt.show()
-
-
