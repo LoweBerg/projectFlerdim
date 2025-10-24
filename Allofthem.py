@@ -4,6 +4,7 @@ from scipy.optimize import fsolve
 from math import e, floor
 
 # Please just look at the github. This format sucks so much
+# https://github.com/LoweBerg/projectFlerdim
 
 # Task 1
 
