@@ -31,13 +31,13 @@ def gen_z(f, x, y, width, res):
 
 
 # setup
-fig, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
-axs[0].set_xlabel("X")
-axs[0].set_ylabel("Y")
-axs[0].set_zlabel("Z")
-axs[1].set_xlabel("X")
-axs[1].set_ylabel("Y")
-axs[1].set_zlabel("Z")
+#fig, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
+#axs[0].set_xlabel("X")
+#axs[0].set_ylabel("Y")
+#axs[0].set_zlabel("Z")
+#axs[1].set_xlabel("X")
+#axs[1].set_ylabel("Y")
+#axs[1].set_zlabel("Z")
 resolution = 100 # for most of the plots 100 resolution gives good enough results
 resolution_4 = 1000 # for the 4th plot a higher resolution more clearly distinguishes the local extrema
 
@@ -54,40 +54,74 @@ X5, Y5, Z5 = gen_z(f5, 0, 0, 2, resolution)
 
 # switches; makes it easy to switch from one plot to another :D
 
-plot1 = 0
-plot2 = 0
-plot3 = 0
-plot4 = 0
+plot1 = 1
+plot2 = 1
+plot3 = 1
+plot4 = 1
 plot5 = 1
 
 
 # prepares the plots for plotting if a switch is turned on
 
 if plot1:   # the plot shows that this limit equals 0.5 for x,y -> (1,1)
+    fig, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
+    axs[0].set_xlabel("X")
+    axs[0].set_ylabel("Y")
+    axs[0].set_zlabel("Z")
+    axs[1].set_xlabel("X")
+    axs[1].set_ylabel("Y")
+    axs[1].set_zlabel("Z")
     axs[0].plot_surface(X1, Y1, Z1)
     pcm = axs[1].contourf(X1, Y1, Z1, levels=20, cmap='rainbow')
     fig.colorbar(pcm, ax=axs[1])
     
 if plot2:   # there is no limit here since there are multiple z-values for the same x,y
+    fig, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
+    axs[0].set_xlabel("X")
+    axs[0].set_ylabel("Y")
+    axs[0].set_zlabel("Z")
+    axs[1].set_xlabel("X")
+    axs[1].set_ylabel("Y")
+    axs[1].set_zlabel("Z")
     axs[0].plot_surface(X2, Y2, Z2)
     pcm = axs[1].contourf(X2, Y2, Z2, levels=20, cmap='rainbow')
     fig.colorbar(pcm, ax=axs[1])
     
 if plot3:   # limit approaches -1/6
+    fig, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
+    axs[0].set_xlabel("X")
+    axs[0].set_ylabel("Y")
+    axs[0].set_zlabel("Z")
+    axs[1].set_xlabel("X")
+    axs[1].set_ylabel("Y")
+    axs[1].set_zlabel("Z")
     axs[0].plot_surface(X3, Y3, Z3)
     pcm = axs[1].contourf(X3, Y3, Z3, levels=20, cmap='rainbow')
     fig.colorbar(pcm, ax=axs[1])
     
 if plot4:   # local maximum at x,y = 1,2 which is best seen in the contour graph
+    fig, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
+    axs[0].set_xlabel("X")
+    axs[0].set_ylabel("Y")
+    axs[0].set_zlabel("Z")
+    axs[1].set_xlabel("X")
+    axs[1].set_ylabel("Y")
+    axs[1].set_zlabel("Z")
     axs[0].plot_surface(X4, Y4, Z4)
     pcm = axs[1].contourf(X4, Y4, Z4, levels=20, cmap='rainbow')
     fig.colorbar(pcm, ax=axs[1])
     
 if plot5:   # two local maxima at x=0 y=1,-1 and one minimum at the origin
+    fig, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
+    axs[0].set_xlabel("X")
+    axs[0].set_ylabel("Y")
+    axs[0].set_zlabel("Z")
+    axs[1].set_xlabel("X")
+    axs[1].set_ylabel("Y")
+    axs[1].set_zlabel("Z")
     axs[0].plot_surface(X5, Y5, Z5)
     pcm = axs[1].contourf(X5, Y5, Z5, levels=20, cmap='rainbow')
     fig.colorbar(pcm, ax=axs[1])
-    
 
 
 plt.show()

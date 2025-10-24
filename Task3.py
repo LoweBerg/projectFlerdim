@@ -25,8 +25,7 @@ def P_2(x, y):
     return roots[Mid, Mid] + DDX*x + DDY*y + (DFXX*x**2 + 2*DFXY*x*y + DFYY*y**2)/2
 
 
-
-PVZ_2 = np.zeros((51, 51))#loop that iterates over every possible combination on the lists X and Y
+PVZ_2 = np.zeros((51, 51))  # loop that iterates over every possible combination on the lists X and Y
 
 for i in range(np.size(X)):
     for j in range(np.size(X)):
