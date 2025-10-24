@@ -56,7 +56,7 @@ plot5 = 1
 
 # prepares the plots for plotting if a switch is turned on
 
-if plot1:   # the plot shows that this limit equals 0.5 for x,y -> (1,1)
+if plot1:   # no limit since function is undefined along x = y
     fig, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
     fig.suptitle("Plot 1")
     axs[0].set_xlabel("X")
@@ -82,7 +82,7 @@ if plot2:   # there is no limit here since there are multiple z-values for the s
     pcm = axs[1].contourf(X2, Y2, Z2, levels=20, cmap='rainbow')
     fig.colorbar(pcm, ax=axs[1])
     
-if plot3:   # limit approaches -1/6
+if plot3:   # looks like it has limit -1/6 but is actually undefined along y = x - 1
     fig, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
     fig.suptitle("Plot 3")
     axs[0].set_xlabel("X")
