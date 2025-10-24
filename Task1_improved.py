@@ -65,6 +65,7 @@ plot5 = 1
 
 if plot1:   # the plot shows that this limit equals 0.5 for x,y -> (1,1)
     fig, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
+    fig.suptitle("Plot 1")
     axs[0].set_xlabel("X")
     axs[0].set_ylabel("Y")
     axs[0].set_zlabel("Z")
@@ -77,6 +78,7 @@ if plot1:   # the plot shows that this limit equals 0.5 for x,y -> (1,1)
     
 if plot2:   # there is no limit here since there are multiple z-values for the same x,y
     fig, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
+    fig.suptitle("Plot 2")
     axs[0].set_xlabel("X")
     axs[0].set_ylabel("Y")
     axs[0].set_zlabel("Z")
@@ -89,6 +91,7 @@ if plot2:   # there is no limit here since there are multiple z-values for the s
     
 if plot3:   # limit approaches -1/6
     fig, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
+    fig.suptitle("Plot 3")
     axs[0].set_xlabel("X")
     axs[0].set_ylabel("Y")
     axs[0].set_zlabel("Z")
@@ -101,6 +104,7 @@ if plot3:   # limit approaches -1/6
     
 if plot4:   # local maximum at x,y = 1,2 which is best seen in the contour graph
     fig, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
+    fig.suptitle("Plot 4")
     axs[0].set_xlabel("X")
     axs[0].set_ylabel("Y")
     axs[0].set_zlabel("Z")
@@ -113,6 +117,7 @@ if plot4:   # local maximum at x,y = 1,2 which is best seen in the contour graph
     
 if plot5:   # two local maxima at x=0 y=1,-1 and one minimum at the origin
     fig, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
+    fig.suptitle("Plot 5")
     axs[0].set_xlabel("X")
     axs[0].set_ylabel("Y")
     axs[0].set_zlabel("Z")
@@ -125,3 +130,4 @@ if plot5:   # two local maxima at x=0 y=1,-1 and one minimum at the origin
 
 
 plt.show()
+
