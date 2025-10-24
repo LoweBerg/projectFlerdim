@@ -33,10 +33,18 @@ for i in range(np.size(X)):
     for j in range(np.size(X)):
         PVZ_2[i, j] = P_2(X[i], Y[j])
 
-# surface plot of Z and Taylor fcn
+#Surface plot of Z(x, y)
 
 X_, Y_ = np.meshgrid(np.linspace(-10**(-5), 10**(-5), 51), np.linspace(-10**(-5), 10**(-5), 51))
 Z_ = roots
+
+ax = plt.figure().add_subplot(projection='3d')
+ax.plot_surface(X_, Y_, Z_)
+plt.title('Z(x, y)')
+plt.xlabel('X')
+plt.ylabel('Y')
+
+# surface plot of Z and Taylor fcn
 
 ax = plt.figure().add_subplot(projection='3d', xlabel='x', ylabel='y', zlabel='z')
 ax.plot_surface(X_, Y_, P_2(X_, Y_), color='purple', lw=0.4, alpha=0.7, edgecolors='purple')            # plotting taylor
@@ -51,4 +59,5 @@ plt.contourf(X_, Y_, err, levels = 150, cmap = 'inferno')
 plt.title('Absolute error')
 plt.colorbar()
 plt.show()
+
 
