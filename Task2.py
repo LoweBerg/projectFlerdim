@@ -72,8 +72,8 @@ def f5(x, y):  # (0, +-1.25)
 
 
 # switches
-plot1 = 0
-plot2 = 0
+plot1 = 1
+plot2 = 1
 plot3 = 1
 
 # setup
@@ -128,5 +128,9 @@ if plot3:
     ax.set_ylabel("y")
     ax.set_zlabel("error")
     ax.plot_surface(X3, Y3, Z2-Z1)
+
+
+print("Gradient of f5: \n", grad(f5, 0, 0, 10**-6))
+print("Hessian of f5: \n", hessian(f5, 0, 0, 10**-6))
 
 plt.show()

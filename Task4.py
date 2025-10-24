@@ -53,7 +53,6 @@ plt.show()
 # using our algorithm to find minimas around the two points
 optimization(0, 0, himmelblau, 0.01, 20)                # algorithm run 1
 X1 = np.array([item[0][0] for item in iterates])
-print(X1)
 Y1 = np.array([item[0][1] for item in iterates])
 Z1 = himmelblau(X1, Y1)
 
