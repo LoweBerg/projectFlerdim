@@ -2,11 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def f1(x, y):  # guess limit is 0.5
+def f1(x, y):
     return (x**2-x*y)/(x**2-y**2)
 
 
-def f2(x, y):  # guess no limit
+def f2(x, y):
     return (x**2 + y**2)/(x**2 + x*y + y**2)
 
 
@@ -18,7 +18,7 @@ def f4(x, y):
     return 8*x*y-4*x**2*y-2*x*y**2+x**2*y**2
 
 
-def f5(x, y):  # (0, +-1.25)
+def f5(x, y):
     return (x**2+3*y**2)*np.e**(-x**2-y**2)
 
 
@@ -31,13 +31,6 @@ def gen_z(f, x, y, width, res):
 
 
 # setup
-#fig, axs = plt.subplots(1, 2, subplot_kw={'projection': '3d'})
-#axs[0].set_xlabel("X")
-#axs[0].set_ylabel("Y")
-#axs[0].set_zlabel("Z")
-#axs[1].set_xlabel("X")
-#axs[1].set_ylabel("Y")
-#axs[1].set_zlabel("Z")
 resolution = 100 # for most of the plots 100 resolution gives good enough results
 resolution_4 = 1000 # for the 4th plot a higher resolution more clearly distinguishes the local extrema
 
@@ -130,4 +123,3 @@ if plot5:   # two local maxima at x=0 y=1,-1 and one minimum at the origin
 
 
 plt.show()
-
