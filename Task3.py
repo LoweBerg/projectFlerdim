@@ -14,6 +14,8 @@ for i in range(np.size(X)):
 Mid = floor(51/2)
 H = (2*10**-5)/51
 
+# coefficients
+
 DDX = (roots[Mid+1, Mid]-roots[Mid, Mid])/H
 DDY = (roots[Mid, Mid+1]-roots[Mid, Mid])/H
 DFXX = (roots[Mid+2, Mid] - 2*roots[Mid+1, Mid] + roots[Mid, Mid])/(H**2)
@@ -49,3 +51,4 @@ plt.contourf(X_, Y_, err, levels = 150, cmap = 'inferno')
 plt.title('Absolute error')
 plt.colorbar()
 plt.show()
+
