@@ -11,7 +11,7 @@ def f2(x, y):
 
 
 def f3(x, y):
-    return (np.sin(x+x*y)-x-x*y)/(x**3*(y+1)**3)
+    return (np.sin(x+x*y)-x-(x*y))/((x**3)*((y+1)**3))
 
 
 def f4(x, y):
