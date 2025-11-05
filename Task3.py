@@ -43,9 +43,6 @@ def hessian(f, x, y, h):
     return np.array([[dfxx, dfxy], [dfxy, dfyy]])
 
 
-
-
-
 def z(x, y):
     # Necessary steps to vectorize z
     shape = np.shape(x)
@@ -94,7 +91,7 @@ plt.title('Taylor fcn (purple) & Z fcn (blue)')
 # calculating & plotting absolute error
 err = abs(Z - P_2)
 
-ax = plt.figure().add_subplot(projection='3d', xlabel = 'x', ylabel = 'y', zlabel = 'z')
+ax = plt.figure().add_subplot(projection='3d', xlabel='x', ylabel='y', zlabel='z')
 plt.contourf(X, Y, err, levels=150, cmap='inferno')
 plt.title('Absolute error')
 plt.colorbar()
