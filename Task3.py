@@ -1,81 +1,100 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
-from math import e, floor
-
-X = np.linspace(-10**-5, 10**-5, 51)
-Y = np.linspace(-10**-5, 10**-5, 51)
-roots = np.zeros((51, 51))
-
-# loop that iterates over every possible combination on the lists X and Y
-for i in range(np.size(X)):
-    for j in range(np.size(X)):
-        roots[i, j] = fsolve(lambda z: X[i] + 2*Y[j] + z + e**(2*z) - 1, 0)
-
-mid = floor(51 / 2)
-H = (2*10**-5)/50
-
-# coefficients
-
-# old bad derivatives
-'''   
-DDX = (roots[Mid+1, Mid]-roots[Mid, Mid])/H
-DDY = (roots[Mid, Mid+1]-roots[Mid, Mid])/H
-DFXX = (roots[Mid+2, Mid] - 2*roots[Mid+1, Mid] + roots[Mid, Mid])/(H**2)
-DFXY = (roots[Mid+1, Mid+1]-roots[Mid, Mid+1]-roots[Mid+1, Mid]-roots[Mid, Mid])/(H**2)
-DFYY = (roots[Mid, Mid+2] - 2*roots[Mid, Mid+1] + roots[Mid, Mid])/(H**2)
-'''
-
-# Centered derivatives (nice)
-DDX = (roots[mid + 1, mid] - roots[mid - 1, mid]) / (2 * H)
-DDY = (roots[mid, mid + 1] - roots[mid, mid - 1]) / (2 * H)
-DFXX = (roots[mid + 2, mid] - 2 * roots[mid, mid] + roots[mid - 2, mid]) / (4 * H ** 2)
-DFXY = (roots[mid + 1, mid + 1] - roots[mid - 1, mid + 1] - roots[mid + 1, mid - 1] + roots[mid - 1, mid - 1]) / (4 * H ** 2)
-DFYY = (roots[mid, mid + 2] - 2 * roots[mid, mid] + roots[mid, mid - 2]) / (4 * H ** 2)
+from math import e
 
 
-def P_2(x, y):
-    return 0 + DDX * x + DDY * y + (DFXX * x ** 2 + 2 * DFXY * x * y + DFYY * y ** 2) / 2
+# Had to copy in the functions since importing also seemed to import plots from previous tasks
+def ddx(f, x, y, h):
+    return (f(x+h, y)-f(x, y))/h
 
 
-X = np.linspace(-5, 5, 101)
-Y = np.linspace(-5, 5, 101)
-roots = np.zeros((101, 101))
+def ddy(f, x, y, h):
+    return (f(x, y+h)-f(x, y))/h
 
-# loop that iterates over every possible combination on the lists X and Y
-for i in range(np.size(X)):
-    for j in range(np.size(X)):
-        roots[i, j] = fsolve(lambda z: X[i] + 2*Y[j] + z + e**(2*z) - 1, 0)
 
-PVZ_2 = np.zeros((101, 101))
+def gen_z(f, x, y, width, res) -> np.ndarray:
+    X_, Y_ = np.meshgrid(np.linspace(x - width, x + width, res), np.linspace(y - width, y + width, res))
 
-# loop that iterates over every possible combination on the lists X and Y
-for i in range(np.size(X)):
-    for j in range(np.size(X)):
-        PVZ_2[i, j] = P_2(X[i], Y[j])
+    Z_ = (f(X_, Y_))
+
+    return X_, Y_, Z_
+
+
+def grad(f, x, y, h):  # returns the gradient of a function f at a point x, y by comparing with x+h, y+h
+    return np.array([ddx(f, x, y, h), ddy(f, x, y, h)])
+
+
+def hessian(f, x, y, h):
+    """
+    Calculates the numerical hessian of a generic function around a point (x, y)
+    :param f: function to be analyzed
+    :param x: x-value of point
+    :param y: y-value of point
+    :param h: small value to approximate derivative
+    :return: hessian matrix for functio
+    """
+    dfxx = (ddx(f, x+h, y, h) - ddx(f, x, y, h))/h
+    dfxy = (ddx(f, x, y+h, h) - ddx(f, x, y, h))/h
+    # not necessary but can be nice to have anyway
+    # dfyx = (ddy(f, x+h, y, h) - ddy(f, x, y, h))/h
+    dfyy = (ddy(f, x, y+h, h) - ddy(f, x, y, h))/h
+
+    return np.array([[dfxx, dfxy], [dfxy, dfyy]])
+
+
+lower = -10**-5
+upper = 10**-5
+resolution = 50
+
+
+def z(x, y):
+    # Necessary steps to vectorize z
+    shape = np.shape(x)
+    x_ravel = np.ravel(x)
+    y_ravel = np.ravel(y)
+
+    res_ravel = np.zeros(np.shape(x_ravel))
+
+    for i in range(np.size(x_ravel)):
+        res_ravel[i] = fsolve(lambda z_: x_ravel[i] + 2*y_ravel[i] + z_ + e**(2*z_) - 1, x0=0)
+
+    res = np.reshape(res_ravel, shape)
+
+    return res
+
+
+G = grad(z, 0, 0, 10**-4)
+
+H = hessian(z, 0, 0, 10**-4)
+
+
+def p_2(x, y):
+    return z(0, 0) + G[0] * x + G[1] * y + (H[0, 0] * x ** 2 + 2 * H[0, 1] * x * y + H[1, 1] * y ** 2) / 2
+
+
+X, Y, Z = gen_z(z, 0, 0, 1, resolution)
+P_2 = gen_z(p_2, 0, 0, 1, resolution)[2]
 
 
 # Surface plot of Z(x, y)
-X_, Y_ = np.meshgrid(np.linspace(-5, 5, 101), np.linspace(-5, 5, 101))
-Z_ = np.matrix_transpose(roots)  # Slap a transpose on that bad boy
-
 ax = plt.figure().add_subplot(projection='3d')
-ax.plot_surface(X_, Y_, Z_)
+ax.plot_surface(X, Y, Z)
 plt.title('Z(x, y)')
 plt.xlabel('X')
 plt.ylabel('Y')
 
 # surface plot of Z and Taylor fcn
 ax = plt.figure().add_subplot(projection='3d', xlabel='x', ylabel='y', zlabel='z')
-ax.plot_surface(X_, Y_, P_2(X_, Y_), color='purple', lw=0.4, alpha=0.7, edgecolors='purple')            # plotting taylor
-ax.plot_surface(X_, Y_, Z_, color='blue', lw=0.4, alpha=0.7, edgecolors='b')                    # plotting Z
+ax.plot_surface(X, Y, P_2, color='purple', lw=0.4, alpha=0.7, edgecolors='purple')            # plotting taylor
+ax.plot_surface(X, Y, Z, color='blue', lw=0.4, alpha=0.7, edgecolors='b')                    # plotting Z
 plt.title('Taylor fcn (purple) & Z fcn (blue)')
 
 # calculating & plotting absolute error
-err = abs(Z_ - PVZ_2)
+err = abs(Z - P_2)
 
 ax = plt.figure().add_subplot(projection='3d', xlabel = 'x', ylabel = 'y', zlabel = 'z')
-plt.contourf(X_, Y_, err, levels = 150, cmap = 'inferno')
+plt.contourf(X, Y, err, levels=150, cmap='inferno')
 plt.title('Absolute error')
 plt.colorbar()
 plt.show()
