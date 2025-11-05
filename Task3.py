@@ -43,9 +43,7 @@ def hessian(f, x, y, h):
     return np.array([[dfxx, dfxy], [dfxy, dfyy]])
 
 
-lower = -10**-5
-upper = 10**-5
-resolution = 50
+
 
 
 def z(x, y):
@@ -57,7 +55,7 @@ def z(x, y):
     res_ravel = np.zeros(np.shape(x_ravel))
 
     for i in range(np.size(x_ravel)):
-        res_ravel[i] = fsolve(lambda z_: x_ravel[i] + 2*y_ravel[i] + z_ + e**(2*z_) - 1, x0=0)
+        res_ravel[i] = fsolve(lambda z_: x_ravel[i] + 2*y_ravel[i] + z_ + e**(2*z_) - 1, x0=0)[0]
 
     res = np.reshape(res_ravel, shape)
 
@@ -73,8 +71,11 @@ def p_2(x, y):
     return z(0, 0) + G[0] * x + G[1] * y + (H[0, 0] * x ** 2 + 2 * H[0, 1] * x * y + H[1, 1] * y ** 2) / 2
 
 
-X, Y, Z = gen_z(z, 0, 0, 1, resolution)
-P_2 = gen_z(p_2, 0, 0, 1, resolution)[2]
+resolution = 50
+half_width = 0.5
+
+X, Y, Z = gen_z(z, 0, 0, half_width, resolution)
+P_2 = gen_z(p_2, 0, 0, half_width, resolution)[2]
 
 
 # Surface plot of Z(x, y)
